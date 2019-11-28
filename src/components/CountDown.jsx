@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Progress } from 'antd';
 import CountDownInput from './CountDownInput';
+import finishedSound from '../audio/finished.mp3';
 
 class CountDown extends React.Component {
   constructor(props) {
@@ -13,6 +14,10 @@ class CountDown extends React.Component {
       step: 0,
       isFirstPlay: true,
     };
+  }
+
+  componentWillUnmount() {
+    this.clean();
   }
 
   convertToTime = time => {
@@ -31,12 +36,15 @@ class CountDown extends React.Component {
 
   startCountdown = () => {
     const { playBtnIsActive, isFirstPlay, minsValue, secsValue } = this.state;
-    if (playBtnIsActive) {
-      clearInterval(this.timerId);
-      this.setState({ playBtnIsActive: !playBtnIsActive });
+    if (minsValue === '00' && secsValue === '00') {
+      alert('Введите время');
       return;
     }
     this.setState({ playBtnIsActive: !playBtnIsActive });
+    if (playBtnIsActive) {
+      clearInterval(this.timerId);
+      return;
+    }
     if (isFirstPlay) {
       this.setState(
         {
@@ -56,9 +64,7 @@ class CountDown extends React.Component {
       let newMin = Number(minsValue);
       let newSec = Number(secsValue);
       if (newMin === 0 && newSec === 0) {
-        const finished = new Audio(
-          'https://translate.google.com/translate_tts?ie=UTF-8&q=%D0%B4%D0%B7%D1%8B%D0%BD%D1%8C&tl=ru&total=1&idx=0&textlen=5&tk=665362.822181&client=webapp&prev=input&ttsspeed=0.24'
-        );
+        const finished = new Audio(finishedSound);
         finished.play();
         this.clean();
         return;

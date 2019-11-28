@@ -13,7 +13,7 @@ const CountDownInput = props => {
           <InputNumber
             disabled={!toDisable}
             min={0}
-            max={60}
+            max={720}
             value={minsValue}
             onChange={inpHandler('min')}
           />
@@ -23,7 +23,7 @@ const CountDownInput = props => {
           <InputNumber
             disabled={!toDisable}
             min={0}
-            max={60}
+            max={59}
             value={secsValue}
             onChange={inpHandler('sec')}
           />

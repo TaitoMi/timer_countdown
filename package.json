@@ -1,8 +1,8 @@
 {
   "name": "timer-countdown",
   "version": "0.1.0",
-	"private": true,
-	"homepage": "https://taitomi.github.io/timer_countdown",
+  "private": true,
+  "homepage": "https://taitomi.github.io/timer_countdown",
   "dependencies": {
     "antd": "^3.25.2",
     "node-sass": "^4.13.0",
@@ -18,8 +18,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint --color --ext js,jsx src",
-		"lint:fix": "./node_modules/.bin/eslint --fix --color --ext js,jsx src",
-		"predeploy": "npm run build",
+    "lint:fix": "./node_modules/.bin/eslint --fix --color --ext js,jsx src",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
