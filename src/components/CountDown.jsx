@@ -7,12 +7,13 @@ class CountDown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      minsValue: '00',
-      secsValue: '00',
+      minsValue: 0,
+      secsValue: 0,
       playBtnIsActive: false,
       percentTimeOff: 0,
       step: 0,
       isFirstPlay: true,
+      totalSeconds: 0,
     };
   }
 
@@ -20,14 +21,16 @@ class CountDown extends React.Component {
     this.clean();
   }
 
-  convertToTime = time => {
-    return Number(time) < 10 ? `0${time}` : `${time}`;
-  };
-
   inputHandler = type => value => {
-    const newValue = this.convertToTime(value);
+    const newValue = value;
     if (type === 'slider') {
-      this.setState({ minsValue: newValue });
+      const mins = Math.floor(value / 60);
+      const seconds = value - mins * 60;
+      this.setState({
+        minsValue: mins,
+        secsValue: seconds,
+        totalSeconds: value,
+      });
       return;
     }
     const key = type === 'min' ? 'minsValue' : 'secsValue';
@@ -36,7 +39,7 @@ class CountDown extends React.Component {
 
   startCountdown = () => {
     const { playBtnIsActive, isFirstPlay, minsValue, secsValue } = this.state;
-    if (minsValue === '00' && secsValue === '00') {
+    if (minsValue === 0 && secsValue === 0) {
       alert('Введите время');
       return;
     }
@@ -45,10 +48,10 @@ class CountDown extends React.Component {
       clearInterval(this.timerId);
       return;
     }
-    if (isFirstPlay) {
+    if (isFirstPlay || !playBtnIsActive) {
       this.setState(
         {
-          step: 100 / (Number(secsValue) + Number(minsValue) * 60),
+          step: 100 / (minsValue * 60 + secsValue),
           isFirstPlay: false,
         },
         () => {
@@ -61,10 +64,11 @@ class CountDown extends React.Component {
   startTimer = () => {
     this.timerId = setInterval(() => {
       const { step, minsValue, secsValue } = this.state;
-      let newMin = Number(minsValue);
-      let newSec = Number(secsValue);
+      let newMin = minsValue;
+      let newSec = secsValue;
       if (newMin === 0 && newSec === 0) {
         const finished = new Audio(finishedSound);
+        finished.volume = 0.1;
         finished.play();
         this.clean();
         return;
@@ -77,8 +81,8 @@ class CountDown extends React.Component {
       }
       this.setState(state => {
         return {
-          minsValue: this.convertToTime(newMin),
-          secsValue: this.convertToTime(newSec),
+          minsValue: newMin,
+          secsValue: newSec,
           percentTimeOff: Number((state.percentTimeOff + Number(step)).toFixed(2)),
         };
       });
@@ -88,27 +92,36 @@ class CountDown extends React.Component {
   clean = () => {
     this.setState({
       playBtnIsActive: false,
-      minsValue: '00',
-      secsValue: '00',
+      minsValue: 0,
+      secsValue: 0,
       isFirstPlay: true,
       percentTimeOff: 0,
+      totalSeconds: 0,
     });
     clearInterval(this.timerId);
   };
 
   render() {
-    const { minsValue, playBtnIsActive, secsValue, percentTimeOff, isFirstPlay } = this.state;
+    const {
+      minsValue,
+      playBtnIsActive,
+      secsValue,
+      percentTimeOff,
+      isFirstPlay,
+      totalSeconds,
+    } = this.state;
     const play = playBtnIsActive ? 'pause-circle' : 'play-circle';
+    const time = `${minsValue.toString().padStart(2, '0')}:${secsValue
+      .toString()
+      .padStart(2, '0')}`;
     return (
       <div className="countdown timer">
-        <span className="timer__count">
-          {minsValue}:{secsValue}
-        </span>
-        <Progress type="circle" percent={percentTimeOff} />
+        <Progress type="circle" percent={percentTimeOff} format={() => time} />
         <CountDownInput
           minsValue={minsValue}
           secsValue={secsValue}
           toDisable={isFirstPlay}
+          totalSeconds={totalSeconds}
           inpHandler={this.inputHandler}
         />
         <div className="countdown__btns">

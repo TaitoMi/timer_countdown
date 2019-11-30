@@ -6,9 +6,9 @@ class Timer extends React.Component {
     super(props);
     this.state = {
       playBtnIsActive: false,
-      minutes: '00',
-      seconds: '00',
-      miliseconds: '000',
+      minutes: 0,
+      seconds: 0,
+      miliseconds: 0,
     };
   }
 
@@ -44,9 +44,9 @@ class Timer extends React.Component {
     }
     this.setState(
       {
-        miliseconds: this.msConvert(newMs),
-        seconds: this.convertToTimeFormat(newSec),
-        minutes: this.convertToTimeFormat(newMins),
+        miliseconds: newMs,
+        seconds: newSec,
+        minutes: newMins,
       },
       () => {
         this.timerId = requestAnimationFrame(this.timer(currTime));
@@ -54,23 +54,23 @@ class Timer extends React.Component {
     );
   };
 
-  convertToTimeFormat = time => {
-    return time < 10 ? `0${time}` : `${time}`;
-  };
+  // convertToTimeFormat = time => {
+  //   return time < 10 ? `0${time}` : `${time}`;
+  // };
 
-  msConvert = ms => {
-    if (ms > 9 && ms < 100) {
-      return `0${ms}`;
-    }
-    return `${ms}`;
-  };
+  // msConvert = ms => {
+  //   if (ms > 9 && ms < 100) {
+  //     return `0${ms}`;
+  //   }
+  //   return `${ms}`;
+  // };
 
   clean = () => {
     this.setState({
       playBtnIsActive: false,
-      minutes: '00',
-      seconds: '00',
-      miliseconds: '000',
+      minutes: 0,
+      seconds: 0,
+      miliseconds: 0,
     });
     cancelAnimationFrame(this.timerId);
   };
@@ -86,7 +86,8 @@ class Timer extends React.Component {
     return (
       <div className="app__timer timer">
         <span className="timer__count">
-          {minutes}:{seconds}:{miliseconds}
+          {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}:
+          {miliseconds.toString().padStart(3, '0')}
         </span>
         <div className="timer__btns">
           <button type="button" className="timer__btn" onClick={this.startTimer}>
