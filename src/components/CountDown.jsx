@@ -68,7 +68,7 @@ class CountDown extends React.Component {
       let newSec = secsValue;
       if (newMin === 0 && newSec === 0) {
         const finished = new Audio(finishedSound);
-        finished.volume = 0.1;
+        finished.volume = 0.3;
         finished.play();
         this.clean();
         return;
