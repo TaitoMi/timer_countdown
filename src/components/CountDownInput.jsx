@@ -22,6 +22,7 @@ const CountDownInput = props => {
             max={720}
             value={minsValue}
             onChange={inpHandler('min')}
+            className="timer__input"
           />
         </div>
         <div>
@@ -32,6 +33,7 @@ const CountDownInput = props => {
             max={59}
             value={secsValue}
             onChange={inpHandler('sec')}
+            className="timer__input"
           />
         </div>
       </div>

@@ -30,6 +30,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+    width: 65%;
 	}
 	&__slider {
 		width: 90%;
@@ -73,5 +74,9 @@
 		height: auto;
 		font-size: 50px;
 		margin-bottom: 10px;
+	}
+	&__input {
+		margin: 0 10px 0 3px;
+		width: 50px;
 	}
 }
