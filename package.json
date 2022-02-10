@@ -5,7 +5,7 @@
   "homepage": "https://taitomi.github.io/timer_countdown",
   "dependencies": {
     "antd": "^3.25.2",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
